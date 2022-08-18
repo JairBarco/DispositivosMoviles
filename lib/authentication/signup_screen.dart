@@ -19,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController phoneTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+  TextEditingController confirmPasswordTextEditingController = TextEditingController();
 
   validateForm(){
     validateEmail(String value) {
@@ -35,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if(nameTextEditingController.text.length < 3){
       Fluttertoast.showToast(msg: "Name must be at least 3 characters");
     }
-    else if(!emailTextEditingController.text.contains("@")){
+    else if(!emailTextEditingController.text.contains("@") || emailTextEditingController.text.isEmpty){
       validateEmail(emailTextEditingController.text);
     }
     else if(phoneTextEditingController.text.length < 10){
@@ -43,7 +44,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
     else if(passwordTextEditingController.text.length < 8){
       Fluttertoast.showToast(msg: "Password must have at least 8 characters");
-    }else{
+    }else if(passwordTextEditingController.text != confirmPasswordTextEditingController.text){
+      Fluttertoast.showToast(msg: "Passwords do not match");
+    }
+    else{
       saveDriverInfoNow();
     }
   }
@@ -192,6 +196,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 decoration: const InputDecoration(
                   labelText: "Password",
                   hintText: "Password",
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)
+                  ),
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 10,
+                  ),
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+
+              TextField(
+                controller: confirmPasswordTextEditingController,
+                keyboardType: TextInputType.text,
+                obscureText: true,
+
+                style: const TextStyle(
+                    color:Colors.grey
+                ),
+                decoration: const InputDecoration(
+                  labelText: "Confirm Password",
+                  hintText: "Confirm Password",
                   enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)
                   ),
